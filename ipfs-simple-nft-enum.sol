@@ -9,6 +9,8 @@ contract ipfsSimpleNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 
     bool public useIpfsHardcoded;
     bool public useIpfs;   				// uses https if false
+	bool public tokenUriHardcoded;
+	bool public allowSetUri;
 	bytes32 public ipfsGateway;
 
 	struct ipfsCID{
@@ -51,12 +53,20 @@ contract ipfsSimpleNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 
 	}
 
-	event SetTokenUri(uint256 indexed _tokenId, bytes32 _part_1, bytes32 _part_2);
 
-	function setTokenUri(uint256 _tokenId, bytes32 _part_1, bytes32 _part_2) internal isAdmin(msg.sender) {
+	function hardcodeTokenUri() external onlyOwner {
+		tokenUriHardcoded = true;
+	}
+
+	event SetTokenUri(uint256 indexed _tokenId, bytes32 _part_1, bytes32 _part_2, address _setBy);
+
+	function setTokenUri(uint256 _tokenId, bytes32 _part_1, bytes32 _part_2) external isAdmin(msg.sender) {
+		require(!tokenUriHardcoded, 'TokenURI can no longer change');
+		require(allowSetUri, 'Change is currently not allowed');
+
 		iDToCid[_tokenId].part_1 = _part_1;
 		iDToCid[_tokenId].part_2 = _part_2;
-		emit SetTokenUri(_tokenId, _part_1, _part_2);
+		emit SetTokenUri(_tokenId, _part_1, _part_2, msg.sender);
 	}
 
 }

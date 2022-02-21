@@ -75,7 +75,7 @@ contract Smartify is ipfsSimpleNFT {
 
     function collectContractBalanceToTreasury(uint256 amount) external onlyOwner {
         (bool sent, ) = treasuryAddress.call{value: amount}("");
-        require(sent, "Failed to collect Ether");
+        require(sent, "Cannot collect ether");
     }
 
     function setMintFee(uint256 _mintFee) external onlyOwner {
@@ -112,7 +112,6 @@ contract Smartify is ipfsSimpleNFT {
                 _royaltyAmount
             );
         }
-
     }
 
 }
