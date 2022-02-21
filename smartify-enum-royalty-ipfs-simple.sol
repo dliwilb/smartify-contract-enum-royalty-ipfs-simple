@@ -43,9 +43,7 @@ contract Smartify is ipfsSimpleNFT {
         uint256 indexed tokenId, 
         string indexed hashedIpfsCID, 
         address indexed createdBy, 
-        address mintTo, 
         uint16 editions, 
-        uint16 royaltyAmount, 
         string plainIpfsCID
     );
 
@@ -141,9 +139,7 @@ contract Smartify is ipfsSimpleNFT {
 				    IPFSTools.bytes32ToString(_part_2)
                     )), 
                 msg.sender, 
-                _to, 
                 _editions, 
-                _royaltyAmount, 
                 string(abi.encodePacked(
                     IPFSTools.bytes32ToString(_part_1), 
 				    IPFSTools.bytes32ToString(_part_2)
