@@ -9,7 +9,7 @@ contract ipfsNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 
     bool public useIpfsHardcoded;
     bool public useIpfs;   				// uses https if false
-	uint8 public ipfsGatewayId;
+	bytes32 public ipfsGateway;
 
 	struct ipfsCID{
 		bytes32 part_1;
@@ -28,8 +28,8 @@ contract ipfsNFT is NFTokenMetadataEnumerable, AdminWhitelist {
         useIpfs = _useIpfs;
     }
 
-	function setIpfsGatewayId(uint8 _ipfsGatewayId) external onlyOwner {
-		ipfsGatewayId = _ipfsGatewayId;
+	function setIpfsGateway(bytes32 _ipfsGateway) external onlyOwner {
+		ipfsGateway = _ipfsGateway;
 	}
 
 	function tokenURI(uint256 _tokenId) public view override returns (string memory) {
@@ -39,16 +39,14 @@ contract ipfsNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 			return string(abi.encodePacked(
 				'ipfs://', 
 				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_1), 
-				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_2), 
-				'/ipfs.json'));
+				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_2)));
 		} else {
 			return string(abi.encodePacked(
 				'https://', 
-				IPFSTools.bytes32ToString(IPFSTools.getIpfsGateway(ipfsGatewayId)), 
+				IPFSTools.bytes32ToString(ipfsGateway), 
 				'/', 
 				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_1), 
-				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_2), 
-				'/https-', IPFSTools.uint2str(ipfsGatewayId), '.json'));
+				IPFSTools.bytes32ToString(iDToCid[_tokenId].part_2)));
 		}
 
 	}
