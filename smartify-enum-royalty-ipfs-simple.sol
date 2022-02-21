@@ -41,11 +41,19 @@ contract Smartify is ipfsSimpleNFT {
 
     event CreateToken(
         uint256 indexed tokenId, 
-        string indexed ipfsCID, 
+        string indexed hashedIpfsCID, 
         address indexed createdBy, 
         address mintTo, 
         uint16 editions, 
-        uint16 royaltyAmount
+        uint16 royaltyAmount, 
+        string plainIpfsCID
+    );
+
+    event TokenHashtags(
+        bytes32 indexed hashtag_1, 
+        bytes32 indexed hashtag_2, 
+        bytes32 indexed hashtag_3, 
+        uint256 tokenId
     );
 
     function setNameSymbol(string memory _nftName, string memory _nftSymbol) external onlyOwner {
@@ -92,7 +100,17 @@ contract Smartify is ipfsSimpleNFT {
         _;
     }
 
-    function createToken(uint16 _editions, address _to, bytes32 _part_1, bytes32 _part_2, uint16 _royaltyAmount) public payable mintActive verifyMinter(msg.sender) {
+    function createToken(
+        uint16 _editions, 
+        address _to, 
+        bytes32 _part_1, 
+        bytes32 _part_2, 
+        uint16 _royaltyAmount, 
+        bytes32 _hashtag_1, 
+        bytes32 _hashtag_2, 
+        bytes32 _hashtag_3 
+        ) 
+        public payable mintActive verifyMinter(msg.sender) {
         require(msg.value == mintFee * _editions, "Incorrect mint fee"); 
 
         (bool sent, ) = treasuryAddress.call{value: mintFee}("");
@@ -114,8 +132,15 @@ contract Smartify is ipfsSimpleNFT {
                 msg.sender, 
                 _to, 
                 _editions, 
-                _royaltyAmount
+                _royaltyAmount, 
+                string(abi.encodePacked(
+                    IPFSTools.bytes32ToString(_part_1), 
+				    IPFSTools.bytes32ToString(_part_2)
+                    )) 
             );
+
+            emit TokenHashtags(_hashtag_1, _hashtag_2, _hashtag_3, _tokenId);
+
         }
     }
 
