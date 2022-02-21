@@ -12,9 +12,11 @@ contract Smartify is ipfsSimpleNFT {
     bool public nftNameSymbolHardcoded;
     bool public isMintAvailable;
     bool public treasuryHardcoded;
+    bool public allowMultiHashtag;
     uint256 public mintFee;
     address public treasuryAddress;
 
+    mapping(uint256 => bool) internal hashtagged;
 
     constructor() {
         adminAddresses[msg.sender] = true;
@@ -106,9 +108,10 @@ contract Smartify is ipfsSimpleNFT {
         external {
 
         require(idToOwner[_tokenId] != address(0), NOT_VALID_NFT);
-
         require(msg.sender == royalties[_tokenId].receiver, "Only creator can add hashtag");
+        require(hashtagged[_tokenId] == false || allowMultiHashtag, "Token already hashtagged");
 
+        hashtagged[_tokenId] = true;
         emit TokenHashtags( _tokenId, _hashtag_1, _hashtag_2, _hashtag_3);
     }
 
