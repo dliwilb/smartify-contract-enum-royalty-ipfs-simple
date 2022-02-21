@@ -26,6 +26,8 @@ contract Smartify is ipfsSimpleNFT {
         nftSymbol = "ITMS";
         isMintAvailable = true;
         mintFee = 1000000000000000;
+
+        ipfsGateway = 0x697066732e696f2f697066730000000000000000000000000000000000000000;
     }
 
 
