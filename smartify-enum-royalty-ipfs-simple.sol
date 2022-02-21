@@ -107,6 +107,8 @@ contract Smartify is ipfsSimpleNFT {
         bytes32 _hashtag_3) 
         external {
 
+        require(idToOwner[_tokenId] != address(0), NOT_VALID_NFT);
+
         require(msg.sender == royalties[_tokenId].receiver, "Only creator can add hashtag");
 
         emit TokenHashtags( _tokenId, _hashtag_1, _hashtag_2, _hashtag_3);
