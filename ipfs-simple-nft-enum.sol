@@ -5,7 +5,7 @@ import "./admin-whitelist.sol";
 import "./nf-token-metadata-enumerable.sol";
 import "./ipfs-tools.sol";
 
-contract ipfsNFT is NFTokenMetadataEnumerable, AdminWhitelist {
+contract ipfsSimpleNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 
     bool public useIpfsHardcoded;
     bool public useIpfs;   				// uses https if false
@@ -51,9 +51,12 @@ contract ipfsNFT is NFTokenMetadataEnumerable, AdminWhitelist {
 
 	}
 
+	event SetTokenUri(uint256 indexed _tokenId, bytes32 _part_1, bytes32 _part_2);
+
 	function setTokenUri(uint256 _tokenId, bytes32 _part_1, bytes32 _part_2) internal isAdmin(msg.sender) {
 		iDToCid[_tokenId].part_1 = _part_1;
 		iDToCid[_tokenId].part_2 = _part_2;
+		emit SetTokenUri(_tokenId, _part_1, _part_2);
 	}
 
 }
