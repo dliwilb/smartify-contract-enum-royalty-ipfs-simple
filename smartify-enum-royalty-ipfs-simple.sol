@@ -105,7 +105,10 @@ contract Smartify is ipfsSimpleNFT {
 
             emit CreateToken(
                 _tokenId, 
-                string(abi.encodePacked(_part_1, _part_2)), 
+                string(abi.encodePacked(
+                    IPFSTools.bytes32ToString(_part_1), 
+				    IPFSTools.bytes32ToString(_part_2)
+                    )), 
                 msg.sender, 
                 _to, 
                 _editions, 
