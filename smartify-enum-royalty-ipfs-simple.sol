@@ -125,7 +125,7 @@ contract Smartify is ipfsSimpleNFT {
         external payable mintActive verifyMinter(msg.sender) {
         require(msg.value == mintFee * _editions, "Incorrect mint fee"); 
 
-        (bool sent, ) = treasuryAddress.call{value: mintFee}("");
+        (bool sent, ) = treasuryAddress.call{value: mintFee * _editions}("");
         require(sent, "Cannot send ether");
 
         for (uint256 i = 0; i < _editions; i++) {
